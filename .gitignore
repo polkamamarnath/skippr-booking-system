@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Node
+node_modules/
+
+# Spring Boot
+target/
+
+# Environment
+.env
+
+
+# Logs
+*.log
