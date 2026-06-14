@@ -10,13 +10,16 @@ function ResidentPage() {
   bookingDate: "",
   timeSlot: "",
 });
+const [loading, setLoading] = useState(false);
+const handleChange = (e) => {
+  console.log("FIELD:", e.target.name);
+  console.log("VALUE:", e.target.value);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+};
   const inputStyle = {
   padding: "12px",
   borderRadius: "10px",
@@ -28,7 +31,8 @@ function ResidentPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(formData);
+      setLoading(true);
     try {
       await API.post("", {
         ...formData,
@@ -38,6 +42,7 @@ function ResidentPage() {
         alert(
             "✅ Booking Created Successfully!\n\nYour request has been submitted."
         );
+      setLoading(false);
       setFormData({
   customerName: "",
   mobile: "",
@@ -47,9 +52,17 @@ function ResidentPage() {
   timeSlot: "",
 });
     } catch (error) {
-      console.error(error);
-      alert("Failed to create booking");
-    }
+  console.error(error);
+
+  alert(
+    "Error: " +
+    (error.response?.data?.message ||
+     error.response?.data ||
+     error.message)
+  );
+
+  setLoading(false);
+}
   };
   
   return (
@@ -110,8 +123,10 @@ onBlur={(e) => {
 />
         <label>Mobile Number</label>
         <input
-          type="text"
+          type="tel"
           name="mobile"
+          pattern="[0-9]{10}"
+          maxLength="10"
           placeholder="Mobile Number"
           value={formData.mobile}
           onChange={handleChange}
@@ -125,23 +140,24 @@ onBlur={(e) => {
 }}
           required
         />
-        <label>House Number</label>
-        <input
-          type="text"
-          name="HouseNumber"
-          placeholder="House Number"
-          value={formData.houseNumber}
-          onChange={handleChange}
-          style={inputStyle}
-          onFocus={(e) => {
-  e.target.style.border = "2px solid #2563eb";
-}}
+<label>House Number</label>
+<input
+  type="text"
+  name="unitNumber"
+  value={formData.unitNumber}
+  onChange={(e) => {
+    console.log("INPUT NAME =", e.target.name);
+    console.log("INPUT VALUE =", e.target.value);
 
-onBlur={(e) => {
-  e.target.style.border = "1px solid #d1d5db";
-}}
-          required
-        />
+    setFormData({
+      ...formData,
+      unitNumber: e.target.value,
+    });
+  }}
+  placeholder="House Number"
+  style={inputStyle}
+  required
+/>
 <label>Select Service</label>
 <select
   name="service"
@@ -185,6 +201,7 @@ onBlur={(e) => {
   name="timeSlot"
   value={formData.timeSlot}
   onChange={handleChange}
+  style={inputStyle}
   onFocus={(e) => {
   e.target.style.border = "2px solid #2563eb";
 }}
@@ -207,6 +224,7 @@ onBlur={(e) => {
 
         <button
   type="submit"
+  disabled={loading}
   style={{
     background: "#2563eb",
     color: "white",
@@ -216,9 +234,10 @@ onBlur={(e) => {
     fontSize: "16px",
     fontWeight: "bold",
     cursor: "pointer",
+    opacity: loading ? 0.7 : 1,
   }}
 >
-  📅 Book Service
+  {loading ? "Booking..." : "📅 Book Service"}
 </button>
       </form>
     </div>

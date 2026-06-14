@@ -14,6 +14,13 @@ function BookingTable({ bookings, refreshBookings }) {
     }
   };
 
+  if (bookings.length === 0) {
+  return (
+    <p style={{ textAlign: "center" }}>
+      No bookings available yet.
+    </p>
+  );
+}
   const deleteBooking = async (id) => {
     try {
       await API.delete(`/${id}`);
