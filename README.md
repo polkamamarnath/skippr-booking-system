@@ -94,6 +94,9 @@ Spring Boot REST API
       ▼
 MySQL Database
 ```
+- POST /bookings — creates a new booking (status defaults to Pending)
+- GET  /bookings — returns all bookings (used by admin dashboard)
+- PUT  /bookings/{id}/status — updates booking status (admin action)
 
 The React frontend allows residents to create bookings and administrators to manage them. The Spring Boot backend exposes REST APIs for booking operations, while MySQL stores booking data persistently.
 
