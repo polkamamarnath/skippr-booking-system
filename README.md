@@ -81,6 +81,22 @@ Frontend runs on:
 ```text
 http://localhost:5173
 ```
+## Architecture Overview
+
+```text
+React Frontend
+      │
+      │ Axios HTTP Requests
+      ▼
+Spring Boot REST API
+      │
+      │ Spring Data JPA
+      ▼
+MySQL Database
+```
+
+The React frontend allows residents to create bookings and administrators to manage them. The Spring Boot backend exposes REST APIs for booking operations, while MySQL stores booking data persistently.
+
 
 ---
 
@@ -103,8 +119,17 @@ Example:
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3307/skippr_db
 spring.datasource.username=root
-spring.datasource.password=Root@123
+spring.datasource.password=<your_mysql_password>
 ```
+## Validation Rules
+
+* Customer Name is required
+* Mobile Number must contain 10 digits
+* Service selection is mandatory
+* Booking Date cannot be earlier than the current date
+* Time Slot selection is mandatory
+* Booking Status defaults to Pending when a booking is created
+
 
 ---
 
@@ -124,3 +149,16 @@ spring.datasource.password=Root@123
 * Booking Analytics Dashboard
 * Technician Assignment System
 * Role-Based Access Control
+
+## AI Usage
+
+AI tools were used to assist with:
+
+* React component development
+* Spring Boot API implementation
+* UI styling improvements
+* Debugging and troubleshooting
+* Documentation preparation
+
+All code was reviewed, modified, tested, and integrated manually.
+
